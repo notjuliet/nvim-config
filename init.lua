@@ -41,7 +41,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
   local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
   vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
 end ---@diagnostic disable-next-line: undefined-field
@@ -159,7 +159,17 @@ require('lazy').setup({
 
       { 'j-hui/fidget.nvim', opts = {} },
 
-      { 'folke/lazydev.nvim', ft = 'lua', opts = {} },
+      {
+        'folke/lazydev.nvim',
+        ft = 'lua',
+        opts = {
+          library = {
+            -- Load luvit types when the `vim.uv` word is found
+            { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+          },
+        },
+      },
+      { 'Bilal2453/luvit-meta', lazy = true },
     },
     config = function()
       vim.api.nvim_create_autocmd('LspAttach', {
@@ -395,6 +405,11 @@ require('lazy').setup({
           --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
         },
         sources = {
+          {
+            name = 'lazydev',
+            -- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
+            group_index = 0,
+          },
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
@@ -406,13 +421,15 @@ require('lazy').setup({
   {
     'folke/tokyonight.nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
-    config = function()
-      require('tokyonight').setup {
-        styles = {
-          keywords = { italic = false },
-        },
-      }
-    end,
+    -- config = function()
+    --   require('tokyonight').setup {
+    --     styles = {
+    --       keywords = { italic = false },
+    --     },
+    --     on_colors = function(colors) end,
+    --     on_highlights = function(highlights) end,
+    --   }
+    -- end,
     init = function()
       vim.cmd.colorscheme 'tokyonight-night'
       vim.cmd.hi 'Comment gui=none'
