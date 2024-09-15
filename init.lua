@@ -295,7 +295,6 @@ require('lazy').setup({
         vtsls = {},
         html = {},
         -- clangd = {},
-        -- zls = {},
         rust_analyzer = {},
         tailwindcss = {},
 
