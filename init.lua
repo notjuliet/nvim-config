@@ -461,7 +461,6 @@ require('lazy').setup({
         'bash',
         'c',
         'diff',
-        'rust',
         'javascript',
         'html',
         'lua',
