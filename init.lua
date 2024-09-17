@@ -295,7 +295,7 @@ require('lazy').setup({
         vtsls = {},
         html = {},
         -- clangd = {},
-        rust_analyzer = {},
+        -- rust_analyzer = {},
         tailwindcss = {},
 
         lua_ls = {
@@ -544,9 +544,8 @@ require('lazy').setup({
 
   -- require 'kickstart.plugins.debug',
   require 'kickstart.plugins.indent_line',
-  require 'kickstart.plugins.lint',
+  -- require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
-  require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- { import = 'custom.plugins' },
