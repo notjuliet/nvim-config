@@ -373,6 +373,7 @@ require("lazy").setup({
 			formatters_by_ft = {
 				lua = { "stylua" },
 				javascript = { "prettierd" },
+				json = { "prettierd" },
 				typescript = { "prettierd" },
 				typescriptreact = { "prettierd" },
 				rust = { "rustfmt" },
