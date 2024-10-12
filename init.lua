@@ -300,7 +300,6 @@ require("lazy").setup({
 				vtsls = {},
 				html = {},
 				tailwindcss = {},
-				jq = {},
 				jsonls = {},
 
 				lua_ls = {
@@ -375,7 +374,7 @@ require("lazy").setup({
 			formatters_by_ft = {
 				lua = { "stylua" },
 				javascript = { "prettierd" },
-				json = { "jq" },
+				json = { "prettierd" },
 				typescript = { "prettierd" },
 				typescriptreact = { "prettierd" },
 				rust = { "rustfmt" },
