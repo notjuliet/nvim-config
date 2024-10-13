@@ -388,6 +388,8 @@ require("lazy").setup({
 				lua = { "stylua" },
 				javascript = { "prettierd" },
 				json = { "prettierd" },
+				css = { "prettierd" },
+				html = { "prettierd" },
 				typescript = { "prettierd" },
 				typescriptreact = { "prettierd" },
 				rust = { "rustfmt" },
