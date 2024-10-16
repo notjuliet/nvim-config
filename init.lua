@@ -70,40 +70,8 @@ require("lazy").setup({
 		event = "VimEnter", -- Sets the loading event to 'VimEnter'
 		opts = {
 			icons = {
-				-- set icon mappings to true if you have a Nerd Font
 				mappings = vim.g.have_nerd_font,
-				-- If you are using a Nerd Font: set icons.keys to an empty table which will use the
-				-- default whick-key.nvim defined Nerd Font icons, otherwise define a string table
-				keys = vim.g.have_nerd_font and {} or {
-					Up = "<Up> ",
-					Down = "<Down> ",
-					Left = "<Left> ",
-					Right = "<Right> ",
-					C = "<C-…> ",
-					M = "<M-…> ",
-					D = "<D-…> ",
-					S = "<S-…> ",
-					CR = "<CR> ",
-					Esc = "<Esc> ",
-					ScrollWheelDown = "<ScrollWheelDown> ",
-					ScrollWheelUp = "<ScrollWheelUp> ",
-					NL = "<NL> ",
-					BS = "<BS> ",
-					Space = "<Space> ",
-					Tab = "<Tab> ",
-					F1 = "<F1>",
-					F2 = "<F2>",
-					F3 = "<F3>",
-					F4 = "<F4>",
-					F5 = "<F5>",
-					F6 = "<F6>",
-					F7 = "<F7>",
-					F8 = "<F8>",
-					F9 = "<F9>",
-					F10 = "<F10>",
-					F11 = "<F11>",
-					F12 = "<F12>",
-				},
+				keys = vim.g.have_nerd_font and {},
 			},
 
 			-- Document existing key chains
@@ -229,41 +197,17 @@ require("lazy").setup({
 						vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 					end
 
-					-- Jump to the definition of the word under your cursor.
-					--  This is where a variable was first declared, or where a function is defined, etc.
-					--  To jump back, press <C-t>.
 					map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
-
-					-- Find references for the word under your cursor.
 					map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
-
-					-- Jump to the implementation of the word under your cursor.
-					--  Useful when your language has ways of declaring types without an actual implementation.
 					map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
-
-					-- Jump to the type of the word under your cursor.
-					--  Useful when you're not sure what type a variable is and you want to see
-					--  the definition of its *type*, not where it was *defined*.
 					map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
-
-					-- Fuzzy find all the symbols in your current document.
-					--  Symbols are things like variables, functions, types, etc.
 					map("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
-
-					-- Fuzzy find all the symbols in your current workspace.
-					--  Similar to document symbols, except searches over your entire project.
 					map(
 						"<leader>ws",
 						require("telescope.builtin").lsp_dynamic_workspace_symbols,
 						"[W]orkspace [S]ymbols"
 					)
-
-					-- Rename the variable under your cursor.
-					--  Most Language Servers support renaming across files, etc.
 					map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-
-					-- Execute a code action, usually your cursor needs to be on top of an error
-					-- or a suggestion from your LSP for this to activate.
 					map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
 
 					-- WARN: This is not Goto Definition, this is Goto Declaration.
@@ -405,7 +349,6 @@ require("lazy").setup({
 			"hrsh7th/cmp-path",
 		},
 		config = function()
-			-- See `:help cmp`
 			local cmp = require("cmp")
 
 			cmp.setup({
@@ -435,15 +378,6 @@ require("lazy").setup({
 	{
 		"folke/tokyonight.nvim",
 		priority = 1000, -- Make sure to load this before all the other start plugins.
-		-- config = function()
-		--   require('tokyonight').setup {
-		--     styles = {
-		--       keywords = { italic = false },
-		--     },
-		--     on_colors = function(colors) end,
-		--     on_highlights = function(highlights) end,
-		--   }
-		-- end,
 		init = function()
 			vim.cmd.colorscheme("tokyonight-night")
 			vim.cmd.hi("Comment gui=none")
@@ -533,21 +467,7 @@ require("lazy").setup({
 	-- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 }, {
 	ui = {
-		icons = vim.g.have_nerd_font and {} or {
-			cmd = "⌘",
-			config = "🛠",
-			event = "📅",
-			ft = "📂",
-			init = "⚙",
-			keys = "🗝",
-			plugin = "🔌",
-			runtime = "💻",
-			require = "🌙",
-			source = "📄",
-			start = "🚀",
-			task = "📌",
-			lazy = "💤 ",
-		},
+		icons = vim.g.have_nerd_font and {},
 	},
 })
 
