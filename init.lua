@@ -257,6 +257,7 @@ require("lazy").setup({
 				vtsls = {},
 				html = {},
 				tailwindcss = {},
+				unocss = {},
 				jsonls = {},
 
 				lua_ls = {
@@ -332,6 +333,7 @@ require("lazy").setup({
 				lua = { "stylua" },
 				javascript = { "prettierd" },
 				json = { "prettierd" },
+				jsonc = { "prettierd" },
 				css = { "prettierd" },
 				html = { "prettierd" },
 				typescript = { "prettierd" },
