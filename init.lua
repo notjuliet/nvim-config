@@ -1,6 +1,7 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.g.have_nerd_font = true
+vim.g.markdown_fenced_languages = { "ts=typescript" }
 
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -253,11 +254,23 @@ require("lazy").setup({
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
+			local nvim_lsp = require("lspconfig")
+			nvim_lsp.denols.setup({
+				root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc"),
+			})
+
 			local servers = {
-				vtsls = {},
+				vtsls = {
+					root_dir = nvim_lsp.util.root_pattern("package.json"),
+					single_file_support = false,
+				},
 				html = {},
-				tailwindcss = {},
-				unocss = {},
+				tailwindcss = {
+					root_dir = nvim_lsp.util.root_pattern("tailwind.config.js", "tailwind.config.ts"),
+				},
+				unocss = {
+					root_dir = nvim_lsp.util.root_pattern("uno.config.ts"),
+				},
 				jsonls = {},
 
 				lua_ls = {
