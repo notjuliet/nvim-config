@@ -481,6 +481,13 @@ require("lazy").setup({
 	},
 
 	{
+		"supermaven-inc/supermaven-nvim",
+		config = function()
+			require("supermaven-nvim").setup({})
+		end,
+	},
+
+	{
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",
 		config = function()
