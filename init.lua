@@ -109,7 +109,7 @@ require("lazy").setup({
 			require("telescope").setup({
 				pickers = {
 					live_grep = {
-						file_ignore_patterns = { ".log", "node_modules", ".git", "package%-lock.json" },
+						file_ignore_patterns = { "node_modules", ".git", "package%-lock.json" },
 						additional_args = function(_)
 							return { "--hidden" }
 						end,
