@@ -282,6 +282,7 @@ require("lazy").setup({
 				unocss = {
 					root_dir = nvim_lsp.util.root_pattern("uno.config.ts"),
 				},
+				svelte = {},
 				jsonls = {},
 
 				lua_ls = {
