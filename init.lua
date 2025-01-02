@@ -269,6 +269,7 @@ require("lazy").setup({
 			nvim_lsp.rust_analyzer.setup({
 				cmd = { "/home/juliet/.cargo/bin/rust-analyzer" },
 			})
+			nvim_lsp.ruff.setup({})
 
 			local servers = {
 				vtsls = {
