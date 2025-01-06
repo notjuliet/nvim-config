@@ -70,6 +70,7 @@ require("lazy").setup({
 		"folke/which-key.nvim",
 		event = "VimEnter", -- Sets the loading event to 'VimEnter'
 		opts = {
+			delay = 0,
 			icons = {
 				mappings = vim.g.have_nerd_font,
 				keys = vim.g.have_nerd_font and {},
