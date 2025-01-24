@@ -174,16 +174,18 @@ require("lazy").setup({
 		opts = {
 			library = {
 				-- Load luvit types when the `vim.uv` word is found
-				{ path = "luvit-meta/library", words = { "vim%.uv" } },
+				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
 			},
 		},
 	},
-	{ "Bilal2453/luvit-meta", lazy = true },
 
 	{ -- LSP Configuration & Plugins
 		"neovim/nvim-lspconfig",
 		dependencies = {
-			{ "williamboman/mason.nvim", config = true }, -- NOTE: Must be loaded before dependants
+			-- Mason must be loaded before its dependents so we need to set it up here.
+			-- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
+			{ "williamboman/mason.nvim", opts = {} },
+
 			"williamboman/mason-lspconfig.nvim",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
 
@@ -299,8 +301,6 @@ require("lazy").setup({
 					},
 				},
 			}
-
-			require("mason").setup()
 
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
@@ -487,6 +487,13 @@ require("lazy").setup({
 		"supermaven-inc/supermaven-nvim",
 		config = function()
 			require("supermaven-nvim").setup({})
+		end,
+	},
+
+	{
+		"ray-x/lsp_signature.nvim",
+		config = function()
+			require("lsp_signature").setup({})
 		end,
 	},
 
