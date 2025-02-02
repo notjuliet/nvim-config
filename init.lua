@@ -28,7 +28,6 @@ vim.opt.cursorline = true
 vim.opt.scrolloff = 10
 
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
-vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
 vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
@@ -539,6 +538,71 @@ require("lazy").setup({
 				},
 			})
 			vim.diagnostic.config({ virtual_text = false }) -- Only if needed in your configuration, if you already have native LSP diagnostics
+		end,
+	},
+
+	{
+		"folke/trouble.nvim",
+		opts = {
+			win = {
+				type = "float",
+				relative = "editor",
+				border = "rounded",
+				title = "Diagnostics",
+				title_pos = "center",
+				position = { 0, -2 },
+				size = { width = 0.4, height = 0.4 },
+				zindex = 200,
+			},
+		}, -- for default options, refer to the configuration section for custom setup.
+		cmd = "Trouble",
+		keys = {
+			{
+				"<leader>q",
+				"<cmd>Trouble diagnostics toggle<cr>",
+				desc = "Diagnostics (Trouble)",
+			},
+			{
+				"<leader>xx",
+				"<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+				desc = "Buffer Diagnostics (Trouble)",
+			},
+			{
+				"<leader>cs",
+				"<cmd>Trouble symbols toggle focus=false<cr>",
+				desc = "Symbols (Trouble)",
+			},
+			{
+				"<leader>cl",
+				"<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+				desc = "LSP Definitions / references / ... (Trouble)",
+			},
+			{
+				"<leader>xL",
+				"<cmd>Trouble loclist toggle<cr>",
+				desc = "Location List (Trouble)",
+			},
+			{
+				"<leader>xQ",
+				"<cmd>Trouble qflist toggle<cr>",
+				desc = "Quickfix List (Trouble)",
+			},
+		},
+	},
+
+	{
+		"artemave/workspace-diagnostics.nvim",
+		config = function()
+			require("lspconfig").vtsls.setup({
+				on_attach = function(client, bufnr)
+					require("workspace-diagnostics").populate_workspace_diagnostics(client, bufnr)
+				end,
+			})
+			require("lspconfig").gopls.setup({
+				on_attach = function(client, bufnr)
+					require("workspace-diagnostics").populate_workspace_diagnostics(client, bufnr)
+				end,
+			})
 		end,
 	},
 }, {
