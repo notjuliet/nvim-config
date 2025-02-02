@@ -598,11 +598,6 @@ require("lazy").setup({
 					require("workspace-diagnostics").populate_workspace_diagnostics(client, bufnr)
 				end,
 			})
-			require("lspconfig").gopls.setup({
-				on_attach = function(client, bufnr)
-					require("workspace-diagnostics").populate_workspace_diagnostics(client, bufnr)
-				end,
-			})
 		end,
 	},
 }, {
