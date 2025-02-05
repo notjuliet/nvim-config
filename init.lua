@@ -284,6 +284,7 @@ require("lazy").setup({
 				},
 				svelte = {},
 				jsonls = {},
+				gopls = {},
 
 				lua_ls = {
 					settings = {
