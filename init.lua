@@ -600,6 +600,16 @@ require("lazy").setup({
 			})
 		end,
 	},
+
+	{
+		"sindrets/diffview.nvim",
+		config = function()
+			local diffview = require("diffview")
+			vim.keymap.set("n", "<leader>gd", diffview.open, { desc = "[G]it [D]iff" })
+			vim.keymap.set("n", "<leader>gh", diffview.file_history, { desc = "[G]it [H]istory" })
+			vim.keymap.set("n", "<leader>gc", diffview.close, { desc = "[G]it [C]lose" })
+		end,
+	},
 }, {
 	ui = {
 		icons = vim.g.have_nerd_font and {},
