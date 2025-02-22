@@ -469,11 +469,15 @@ require("lazy").setup({
 		opts = {},
 	},
 
+	-- {
+	-- 	"supermaven-inc/supermaven-nvim",
+	-- 	config = function()
+	-- 		require("supermaven-nvim").setup({})
+	-- 	end,
+	-- },
+
 	{
-		"supermaven-inc/supermaven-nvim",
-		config = function()
-			require("supermaven-nvim").setup({})
-		end,
+		"https://github.com/github/copilot.vim",
 	},
 
 	{
@@ -602,6 +606,31 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>gh", diffview.file_history, { desc = "[G]it [H]istory" })
 			vim.keymap.set("n", "<leader>gc", diffview.close, { desc = "[G]it [C]lose" })
 		end,
+	},
+
+	{
+		"olimorris/codecompanion.nvim",
+		config = function()
+			require("codecompanion").setup({})
+		end,
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-treesitter/nvim-treesitter",
+		},
+	},
+
+	{
+		"OXY2DEV/markview.nvim",
+		lazy = false,
+		opts = {
+			preview = {
+				filetypes = { "markdown", "codecompanion" },
+				ignore_buftypes = {},
+				preview = {
+					enabled = true,
+				},
+			},
+		},
 	},
 }, {
 	ui = {
