@@ -238,7 +238,7 @@ require("lazy").setup({
 			"williamboman/mason-lspconfig.nvim",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
 			{ "j-hui/fidget.nvim", opts = {} },
-			"hrsh7th/cmp-nvim-lsp",
+			"saghen/blink.cmp",
 		},
 		config = function()
 			vim.api.nvim_create_autocmd("LspAttach", {
@@ -327,9 +327,6 @@ require("lazy").setup({
 				},
 			})
 
-			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
-
 			local nvim_lsp = require("lspconfig")
 			nvim_lsp.denols.setup({
 				root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc"),
@@ -365,6 +362,11 @@ require("lazy").setup({
 				},
 			}
 
+			for server, config in pairs(servers) do
+				config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
+				nvim_lsp[server].setup(config)
+			end
+
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"stylua",
@@ -380,6 +382,7 @@ require("lazy").setup({
 				handlers = {
 					function(server_name)
 						local server = servers[server_name] or {}
+						local capabilities = vim.lsp.protocol.make_client_capabilities()
 						-- This handles overriding only values explicitly passed
 						-- by the server configuration above. Useful when disabling
 						-- certain features of an LSP (for example, turning off formatting for tsserver)
@@ -436,40 +439,6 @@ require("lazy").setup({
 				go = { "golines", "goimports" },
 			},
 		},
-	},
-
-	{ -- Autocompletion
-		"hrsh7th/nvim-cmp",
-		event = "InsertEnter",
-		dependencies = {
-			"hrsh7th/cmp-nvim-lsp",
-			"hrsh7th/cmp-path",
-		},
-		config = function()
-			local cmp = require("cmp")
-
-			cmp.setup({
-				completion = { completeopt = "menu,menuone,noinsert" },
-
-				mapping = cmp.mapping.preset.insert({
-					["<C-n>"] = cmp.mapping.select_next_item(),
-					["<C-p>"] = cmp.mapping.select_prev_item(),
-					["<C-b>"] = cmp.mapping.scroll_docs(-4),
-					["<C-f>"] = cmp.mapping.scroll_docs(4),
-					["<C-y>"] = cmp.mapping.confirm({ select = true }),
-					["<C-Space>"] = cmp.mapping.complete({}),
-				}),
-				sources = {
-					{
-						name = "lazydev",
-						-- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
-						group_index = 0,
-					},
-					{ name = "nvim_lsp" },
-					{ name = "path" },
-				},
-			})
-		end,
 	},
 
 	{
@@ -544,9 +513,7 @@ require("lazy").setup({
 		opts = {},
 	},
 
-	{
-		"https://github.com/github/copilot.vim",
-	},
+	{ "https://github.com/github/copilot.vim" },
 
 	{
 		"ray-x/lsp_signature.nvim",
@@ -581,12 +548,7 @@ require("lazy").setup({
 	{
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",
-		config = function()
-			require("nvim-autopairs").setup({})
-			local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-			local cmp = require("cmp")
-			cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
-		end,
+		config = true,
 	},
 
 	{
@@ -688,6 +650,37 @@ require("lazy").setup({
 				},
 			},
 		},
+	},
+
+
+	{
+		"saghen/blink.cmp",
+
+		version = "*",
+
+		---@module 'blink.cmp'
+		---@type blink.cmp.Config
+		opts = {
+			keymap = { preset = "default" },
+
+			appearance = {
+				use_nvim_cmp_as_default = true,
+				nerd_font_variant = "mono",
+			},
+
+			sources = {
+				default = { "lsp", "path", "buffer" },
+			},
+
+			fuzzy = { implementation = "prefer_rust_with_warning" },
+
+			completion = {
+				documentation = {
+					auto_show = true,
+				},
+			},
+		},
+		opts_extend = { "sources.default" },
 	},
 }, {
 	ui = {
