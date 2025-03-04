@@ -52,7 +52,7 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
 
-	{ -- Adds git related signs to the gutter, as well as utilities for managing changes
+	{
 		"lewis6991/gitsigns.nvim",
 		opts = {
 			on_attach = function(bufnr)
@@ -121,7 +121,7 @@ require("lazy").setup({
 		},
 	},
 
-	{ -- Useful plugin to show you pending keybinds.
+	{
 		"folke/which-key.nvim",
 		event = "VimEnter", -- Sets the loading event to 'VimEnter'
 		opts = {
@@ -130,8 +130,6 @@ require("lazy").setup({
 				mappings = vim.g.have_nerd_font,
 				keys = vim.g.have_nerd_font and {},
 			},
-
-			-- Document existing key chains
 			spec = {
 				{ "<leader>c", group = "[C]ode", mode = { "n", "x" } },
 				{ "<leader>d", group = "[D]ocument" },
@@ -236,13 +234,9 @@ require("lazy").setup({
 	{ -- LSP Configuration & Plugins
 		"neovim/nvim-lspconfig",
 		dependencies = {
-			-- Mason must be loaded before its dependents so we need to set it up here.
-			-- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
 			{ "williamboman/mason.nvim", opts = {} },
-
 			"williamboman/mason-lspconfig.nvim",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
-
 			{ "j-hui/fidget.nvim", opts = {} },
 			"hrsh7th/cmp-nvim-lsp",
 		},
@@ -343,7 +337,6 @@ require("lazy").setup({
 			nvim_lsp.rust_analyzer.setup({
 				cmd = { "/home/juliet/.cargo/bin/rust-analyzer" },
 			})
-			nvim_lsp.ruff.setup({})
 
 			local servers = {
 				vtsls = {
@@ -360,15 +353,13 @@ require("lazy").setup({
 				svelte = {},
 				jsonls = {},
 				gopls = {},
-
 				lua_ls = {
 					settings = {
 						Lua = {
 							completion = {
 								callSnippet = "Replace",
 							},
-							-- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-							-- diagnostics = { disable = { 'missing-fields' } },
+							diagnostics = { disable = { "missing-fields" } },
 						},
 					},
 				},
@@ -553,13 +544,6 @@ require("lazy").setup({
 		opts = {},
 	},
 
-	-- {
-	-- 	"supermaven-inc/supermaven-nvim",
-	-- 	config = function()
-	-- 		require("supermaven-nvim").setup({})
-	-- 	end,
-	-- },
-
 	{
 		"https://github.com/github/copilot.vim",
 	},
@@ -669,17 +653,6 @@ require("lazy").setup({
 				desc = "Quickfix List (Trouble)",
 			},
 		},
-	},
-
-	{
-		"artemave/workspace-diagnostics.nvim",
-		config = function()
-			require("lspconfig").vtsls.setup({
-				on_attach = function(client, bufnr)
-					require("workspace-diagnostics").populate_workspace_diagnostics(client, bufnr)
-				end,
-			})
-		end,
 	},
 
 	{
