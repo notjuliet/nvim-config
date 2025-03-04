@@ -82,14 +82,12 @@ require("lazy").setup({
 				end, { desc = "Jump to previous git [c]hange" })
 
 				-- Actions
-				-- visual mode
 				map("v", "<leader>hs", function()
 					gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
 				end, { desc = "git [s]tage hunk" })
 				map("v", "<leader>hr", function()
 					gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
 				end, { desc = "git [r]eset hunk" })
-				-- normal mode
 				map("n", "<leader>hs", gitsigns.stage_hunk, { desc = "git [s]tage hunk" })
 				map("n", "<leader>hr", gitsigns.reset_hunk, { desc = "git [r]eset hunk" })
 				map("n", "<leader>hS", gitsigns.stage_buffer, { desc = "git [S]tage buffer" })
@@ -266,7 +264,6 @@ require("lazy").setup({
 
 					-- The following two autocommands are used to highlight references of the
 					-- word under your cursor when your cursor rests there for a little while.
-					--    See `:help CursorHold` for information about when this is executed
 					local client = vim.lsp.get_client_by_id(event.data.client_id)
 					if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
 						local highlight_augroup =
@@ -383,9 +380,6 @@ require("lazy").setup({
 					function(server_name)
 						local server = servers[server_name] or {}
 						local capabilities = vim.lsp.protocol.make_client_capabilities()
-						-- This handles overriding only values explicitly passed
-						-- by the server configuration above. Useful when disabling
-						-- certain features of an LSP (for example, turning off formatting for tsserver)
 						server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
 						require("lspconfig")[server_name].setup(server)
 					end,
@@ -411,9 +405,6 @@ require("lazy").setup({
 		opts = {
 			notify_on_error = false,
 			format_on_save = function(bufnr)
-				-- Disable "format_on_save lsp_fallback" for languages that don't
-				-- have a well standardized coding style. You can add additional
-				-- languages here or re-enable it for the disabled ones.
 				local disable_filetypes = { c = true, cpp = true }
 				local lsp_format_opt
 				if disable_filetypes[vim.bo[bufnr].filetype] then
@@ -472,12 +463,11 @@ require("lazy").setup({
 			statusline.setup({ use_icons = vim.g.have_nerd_font })
 		end,
 	},
+
 	{ -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 		main = "nvim-treesitter.configs", -- Sets main module to use for opts
-		-- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-
 		opts = {
 			ensure_installed = {
 				"bash",
@@ -500,9 +490,6 @@ require("lazy").setup({
 				enable = true,
 			},
 		},
-		--    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-		--    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-		--    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 	},
 
 	{ "windwp/nvim-ts-autotag", lazy = false, opts = {} },
@@ -652,28 +639,21 @@ require("lazy").setup({
 		},
 	},
 
-
 	{
 		"saghen/blink.cmp",
-
 		version = "*",
-
 		---@module 'blink.cmp'
 		---@type blink.cmp.Config
 		opts = {
 			keymap = { preset = "default" },
-
 			appearance = {
 				use_nvim_cmp_as_default = true,
 				nerd_font_variant = "mono",
 			},
-
 			sources = {
 				default = { "lsp", "path", "buffer" },
 			},
-
 			fuzzy = { implementation = "prefer_rust_with_warning" },
-
 			completion = {
 				documentation = {
 					auto_show = true,
