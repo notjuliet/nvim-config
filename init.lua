@@ -242,9 +242,6 @@ require("lazy").setup({
 					single_file_support = false,
 				},
 				html = {},
-				tailwindcss = {
-					root_dir = nvim_lsp.util.root_pattern("tailwind.config.js", "tailwind.config.ts"),
-				},
 				unocss = {
 					root_dir = nvim_lsp.util.root_pattern("uno.config.ts"),
 				},
@@ -254,9 +251,6 @@ require("lazy").setup({
 				lua_ls = {
 					settings = {
 						Lua = {
-							completion = {
-								callSnippet = "Replace",
-							},
 							diagnostics = { disable = { "missing-fields" } },
 						},
 					},
