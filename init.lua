@@ -281,7 +281,6 @@ require("lazy").setup({
 			vim.list_extend(ensure_installed, {
 				"stylua",
 				"prettierd",
-				"golines",
 				"goimports",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
@@ -330,7 +329,7 @@ require("lazy").setup({
 				typescript = { "prettierd" },
 				typescriptreact = { "prettierd" },
 				rust = { "rustfmt" },
-				go = { "golines", "goimports" },
+				go = { "goimports" },
 			},
 		},
 	},
