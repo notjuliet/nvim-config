@@ -94,12 +94,12 @@ require("lazy").setup({
 				map("n", "<leader>hu", gitsigns.stage_hunk, { desc = "git [u]ndo stage hunk" })
 				map("n", "<leader>hR", gitsigns.reset_buffer, { desc = "git [R]eset buffer" })
 				map("n", "<leader>hp", gitsigns.preview_hunk, { desc = "git [p]review hunk" })
+				map("n", "<leader>hb", gitsigns.blame_line, { desc = "git [b]lame line" })
 				map("n", "<leader>hd", gitsigns.diffthis, { desc = "git [d]iff against index" })
 				map("n", "<leader>hD", function()
 					gitsigns.diffthis("@")
 				end, { desc = "git [D]iff against last commit" })
 				-- Toggles
-				map("n", "<leader>tb", gitsigns.toggle_current_line_blame, { desc = "[T]oggle git show [b]lame line" })
 				map("n", "<leader>tD", gitsigns.preview_hunk_inline, { desc = "[T]oggle git show [D]eleted" })
 				vim.api.nvim_set_hl(0, "GitSignsCurrentLineBlame", { fg = "#8f8f8f" })
 			end,
@@ -128,94 +128,7 @@ require("lazy").setup({
 				mappings = vim.g.have_nerd_font,
 				keys = vim.g.have_nerd_font and {},
 			},
-			spec = {
-				{ "<leader>c", group = "[C]ode", mode = { "n", "x" } },
-				{ "<leader>d", group = "[D]ocument" },
-				{ "<leader>r", group = "[R]ename" },
-				{ "<leader>s", group = "[S]earch" },
-				{ "<leader>w", group = "[W]orkspace" },
-				{ "<leader>t", group = "[T]oggle" },
-				{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
-			},
 		},
-	},
-
-	{ -- Fuzzy Finder (files, lsp, etc)
-		"nvim-telescope/telescope.nvim",
-		event = "VimEnter",
-		branch = "0.1.x",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			{ -- If encountering errors, see telescope-fzf-native README for installation instructions
-				"nvim-telescope/telescope-fzf-native.nvim",
-				build = "make",
-				cond = function()
-					return vim.fn.executable("make") == 1
-				end,
-			},
-			{ "nvim-telescope/telescope-ui-select.nvim" },
-
-			{ "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
-		},
-		config = function()
-			require("telescope").setup({
-				pickers = {
-					live_grep = {
-						file_ignore_patterns = { "node_modules", ".git", "package%-lock.json", "pnpm%-lock.yaml" },
-						additional_args = function(_)
-							return { "--hidden" }
-						end,
-					},
-					find_files = {
-						file_ignore_patterns = { "node_modules", ".git", "package%-lock.json", "pnpm%-lock.yaml" },
-						hidden = true,
-					},
-				},
-
-				extensions = {
-					["ui-select"] = {
-						require("telescope.themes").get_dropdown(),
-					},
-				},
-			})
-
-			pcall(require("telescope").load_extension, "fzf")
-			pcall(require("telescope").load_extension, "ui-select")
-
-			local builtin = require("telescope.builtin")
-			vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
-			vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
-			vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
-			vim.keymap.set("n", "<leader>ss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
-			vim.keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
-			vim.keymap.set("n", "<leader>sg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
-			vim.keymap.set("n", "<leader>sd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
-			vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
-			vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
-			vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
-
-			-- Slightly advanced example of overriding default behavior and theme
-			vim.keymap.set("n", "<leader>/", function()
-				-- You can pass additional configuration to Telescope to change the theme, layout, etc.
-				builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
-					winblend = 10,
-					previewer = false,
-				}))
-			end, { desc = "[/] Fuzzily search in current buffer" })
-
-			-- It's also possible to pass additional configuration options.
-			--  See `:help telescope.builtin.live_grep()` for information about particular keys
-			vim.keymap.set("n", "<leader>s/", function()
-				builtin.live_grep({
-					grep_open_files = true,
-					prompt_title = "Live Grep in Open Files",
-				})
-			end, { desc = "[S]earch [/] in Open Files" })
-
-			vim.keymap.set("n", "<leader>sn", function()
-				builtin.find_files({ cwd = vim.fn.stdpath("config") })
-			end, { desc = "[S]earch [N]eovim files" })
-		end,
 	},
 
 	{
@@ -247,18 +160,8 @@ require("lazy").setup({
 						vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 					end
 
-					map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
-					map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
-					map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
-					map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
-					map("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
-					map(
-						"<leader>ws",
-						require("telescope.builtin").lsp_dynamic_workspace_symbols,
-						"[W]orkspace [S]ymbols"
-					)
-					map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-					map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
+					map("<leader>r", vim.lsp.buf.rename, "[R]e[n]ame")
+					map("<leader>C", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
 
 					map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
@@ -394,7 +297,7 @@ require("lazy").setup({
 		cmd = { "ConformInfo" },
 		keys = {
 			{
-				"<leader>f",
+				"<leader>F",
 				function()
 					require("conform").format({ async = true, lsp_format = "fallback" })
 				end,
@@ -479,6 +382,7 @@ require("lazy").setup({
 				"luadoc",
 				"markdown",
 				"markdown_inline",
+				"regex",
 				"typescript",
 				"tsx",
 				"vim",
@@ -494,12 +398,6 @@ require("lazy").setup({
 
 	{ "windwp/nvim-ts-autotag", lazy = false, opts = {} },
 
-	{ -- Add indentation guides even on blank lines
-		"lukas-reineke/indent-blankline.nvim",
-		main = "ibl",
-		opts = {},
-	},
-
 	{ "https://github.com/github/copilot.vim" },
 
 	{
@@ -507,29 +405,6 @@ require("lazy").setup({
 		config = function()
 			require("lsp_signature").setup({})
 		end,
-	},
-
-	{
-		"nvim-neo-tree/neo-tree.nvim",
-		version = "*",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-tree/nvim-web-devicons",
-			"MunifTanjim/nui.nvim",
-		},
-		cmd = "Neotree",
-		keys = {
-			{ "\\", ":Neotree reveal<CR>", desc = "NeoTree reveal", silent = true },
-		},
-		opts = {
-			filesystem = {
-				window = {
-					mappings = {
-						["\\"] = "close_window",
-					},
-				},
-			},
-		},
 	},
 
 	{
@@ -552,65 +427,6 @@ require("lazy").setup({
 				},
 			})
 			vim.diagnostic.config({ virtual_text = false }) -- Only if needed in your configuration, if you already have native LSP diagnostics
-		end,
-	},
-
-	{
-		"folke/trouble.nvim",
-		opts = {
-			win = {
-				type = "float",
-				relative = "editor",
-				border = "rounded",
-				title = "Diagnostics",
-				title_pos = "center",
-				position = { 0, -2 },
-				size = { width = 0.4, height = 0.4 },
-				zindex = 200,
-			},
-		}, -- for default options, refer to the configuration section for custom setup.
-		cmd = "Trouble",
-		keys = {
-			{
-				"<leader>q",
-				"<cmd>Trouble diagnostics toggle<cr>",
-				desc = "Diagnostics (Trouble)",
-			},
-			{
-				"<leader>xx",
-				"<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
-				desc = "Buffer Diagnostics (Trouble)",
-			},
-			{
-				"<leader>cs",
-				"<cmd>Trouble symbols toggle focus=false<cr>",
-				desc = "Symbols (Trouble)",
-			},
-			{
-				"<leader>cl",
-				"<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
-				desc = "LSP Definitions / references / ... (Trouble)",
-			},
-			{
-				"<leader>xL",
-				"<cmd>Trouble loclist toggle<cr>",
-				desc = "Location List (Trouble)",
-			},
-			{
-				"<leader>xQ",
-				"<cmd>Trouble qflist toggle<cr>",
-				desc = "Quickfix List (Trouble)",
-			},
-		},
-	},
-
-	{
-		"sindrets/diffview.nvim",
-		config = function()
-			local diffview = require("diffview")
-			vim.keymap.set("n", "<leader>gd", diffview.open, { desc = "[G]it [D]iff" })
-			vim.keymap.set("n", "<leader>gh", diffview.file_history, { desc = "[G]it [H]istory" })
-			vim.keymap.set("n", "<leader>gc", diffview.close, { desc = "[G]it [C]lose" })
 		end,
 	},
 
@@ -661,6 +477,76 @@ require("lazy").setup({
 			},
 		},
 		opts_extend = { "sources.default" },
+	},
+
+	{
+		"folke/snacks.nvim",
+		priority = 1000,
+		lazy = false,
+		---@module "snacks"
+		---@type snacks.Config
+		opts = {
+			bigfile = { enabled = true },
+			dashboard = { enabled = true },
+			explorer = { enabled = true },
+			indent = { enabled = true },
+			input = { enabled = true },
+			notifier = {
+				enabled = true,
+				timeout = 5000,
+			},
+			picker = { enabled = true },
+			quickfile = { enabled = true },
+			scope = { enabled = true },
+			statuscolumn = { enabled = true },
+			words = { enabled = true },
+		},
+    -- stylua: ignore
+		keys = {
+			-- Top Pickers & Explorer
+			{ "<leader><space>", function() Snacks.picker.smart() end, desc = "Smart Find Files" },
+			{ "<leader>,", function() Snacks.picker.buffers() end, desc = "Buffers" },
+			{ "<leader>/", function() Snacks.picker.grep() end, desc = "Grep" },
+			{ "<leader>e", function() Snacks.explorer() end, desc = "File Explorer" },
+			-- find
+			{ "<leader>fb", function() Snacks.picker.buffers() end, desc = "Buffers" },
+			{ "<leader>ff", function() Snacks.picker.files() end, desc = "Find Files" },
+			{ "<leader>fp", function() Snacks.picker.projects() end, desc = "Projects" },
+			-- git
+			{ "<leader>gb", function() Snacks.picker.git_branches() end, desc = "Git Branches" },
+			{ "<leader>gl", function() Snacks.picker.git_log() end, desc = "Git Log" },
+			{ "<leader>gL", function() Snacks.picker.git_log_line() end, desc = "Git Log Line" },
+			{ "<leader>gS", function() Snacks.picker.git_stash() end, desc = "Git Stash" },
+			{ "<leader>gd", function() Snacks.picker.git_diff() end, desc = "Git Diff (Hunks)" },
+			{ "<leader>gf", function() Snacks.picker.git_log_file() end, desc = "Git Log File" },
+			-- Grep
+			{ "<leader>sb", function() Snacks.picker.lines() end, desc = "Buffer Lines" },
+			{ "<leader>sB", function() Snacks.picker.grep_buffers() end, desc = "Grep Open Buffers" },
+			{ "<leader>sg", function() Snacks.picker.grep() end, desc = "Grep" },
+			{ "<leader>sw", function() Snacks.picker.grep_word() end, desc = "Visual selection or word", mode = { "n", "x" } },
+			-- search
+			{ "<leader>s/", function() Snacks.picker.search_history() end, desc = "Search History" },
+			{ "<leader>sa", function() Snacks.picker.autocmds() end, desc = "Autocmds" },
+			{ "<leader>sb", function() Snacks.picker.lines() end, desc = "Buffer Lines" },
+			{ "<leader>sC", function() Snacks.picker.commands() end, desc = "Commands" },
+			{ "<leader>sd", function() Snacks.picker.diagnostics() end, desc = "Diagnostics" },
+			{ "<leader>sD", function() Snacks.picker.diagnostics_buffer() end, desc = "Buffer Diagnostics" },
+			{ "<leader>sh", function() Snacks.picker.help() end, desc = "Help Pages" },
+			{ "<leader>su", function() Snacks.picker.undo() end, desc = "Undo History" },
+			-- LSP
+			{ "gd", function() Snacks.picker.lsp_definitions() end, desc = "Goto Definition" },
+			{ "gD", function() Snacks.picker.lsp_declarations() end, desc = "Goto Declaration" },
+			{ "gr", function() Snacks.picker.lsp_references() end, nowait = true, desc = "References" },
+			{ "gI", function() Snacks.picker.lsp_implementations() end, desc = "Goto Implementation" },
+			{ "gy", function() Snacks.picker.lsp_type_definitions() end, desc = "Goto T[y]pe Definition" },
+			{ "<leader>ss", function() Snacks.picker.lsp_symbols() end, desc = "LSP Symbols" },
+			{ "<leader>sS", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols" },
+			-- Other
+			{ "<leader>gB", function() Snacks.gitbrowse() end, desc = "Git Browse", mode = { "n", "v" } },
+			{ "<c-/>", function() Snacks.terminal() end, desc = "Toggle Terminal" },
+			{ "]]", function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" } },
+			{ "[[", function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
+		},
 	},
 }, {
 	ui = {
