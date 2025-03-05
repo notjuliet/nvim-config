@@ -1,7 +1,6 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.g.have_nerd_font = true
-vim.g.markdown_fenced_languages = { "ts=typescript" }
 
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -48,7 +47,7 @@ local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
 	vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-end ---@diagnostic disable-next-line: undefined-field
+end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
@@ -163,7 +162,7 @@ require("lazy").setup({
 					end
 
 					map("<leader>r", vim.lsp.buf.rename, "[R]e[n]ame")
-					map("<leader>C", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
+					map("<leader>C", vim.lsp.buf.code_action, "[C]ode Action", { "n", "x" })
 
 					map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
@@ -308,20 +307,10 @@ require("lazy").setup({
 			},
 		},
 		opts = {
-			notify_on_error = false,
-			format_on_save = function(bufnr)
-				local disable_filetypes = { c = true, cpp = true }
-				local lsp_format_opt
-				if disable_filetypes[vim.bo[bufnr].filetype] then
-					lsp_format_opt = "never"
-				else
-					lsp_format_opt = "fallback"
-				end
-				return {
-					timeout_ms = 1000,
-					lsp_format = lsp_format_opt,
-				}
-			end,
+			format_on_save = {
+				timeout_ms = 1000,
+				lsp_format = "fallback",
+			},
 			formatters_by_ft = {
 				lua = { "stylua" },
 				javascript = { "prettierd" },
@@ -392,9 +381,8 @@ require("lazy").setup({
 				"query",
 			},
 			auto_install = true,
-			highlight = {
-				enable = true,
-			},
+			highlight = { enable = true },
+			indent = { enable = true },
 		},
 	},
 
