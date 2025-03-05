@@ -543,6 +543,7 @@ require("lazy").setup({
 			{ "<leader>sd", function() Snacks.picker.diagnostics() end, desc = "Diagnostics" },
 			{ "<leader>sD", function() Snacks.picker.diagnostics_buffer() end, desc = "Buffer Diagnostics" },
 			{ "<leader>sh", function() Snacks.picker.help() end, desc = "Help Pages" },
+      { "<leader>sH", function() Snacks.picker.highlights() end, desc = "Highlights" },
 			{ "<leader>su", function() Snacks.picker.undo() end, desc = "Undo History" },
 			-- LSP
 			{ "gd", function() Snacks.picker.lsp_definitions() end, desc = "Goto Definition" },
