@@ -516,7 +516,7 @@ require("lazy").setup({
 			-- Top Pickers & Explorer
 			{ "<leader><space>", function() Snacks.picker.smart() end, desc = "Smart Find Files" },
 			{ "<leader>,", function() Snacks.picker.buffers() end, desc = "Buffers" },
-			{ "<leader>/", function() Snacks.picker.grep() end, desc = "Grep" },
+      { "<leader>/", function() Snacks.picker.grep({need_search = false, live = false}) end, desc = "Grep" },
 			{ "<leader>e", function() Snacks.explorer() end, desc = "File Explorer" },
 			-- find
 			{ "<leader>fb", function() Snacks.picker.buffers() end, desc = "Buffers" },
@@ -532,7 +532,7 @@ require("lazy").setup({
 			-- Grep
 			{ "<leader>sb", function() Snacks.picker.lines() end, desc = "Buffer Lines" },
 			{ "<leader>sB", function() Snacks.picker.grep_buffers() end, desc = "Grep Open Buffers" },
-			{ "<leader>sg", function() Snacks.picker.grep() end, desc = "Grep" },
+      { "<leader>sg", function() Snacks.picker.grep({need_search = false, live = false}) end, desc = "Grep" },
 			{ "<leader>sw", function() Snacks.picker.grep_word() end, desc = "Visual selection or word", mode = { "n", "x" } },
 			-- search
 			{ "<leader>s/", function() Snacks.picker.search_history() end, desc = "Search History" },
