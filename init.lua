@@ -399,13 +399,6 @@ require("lazy").setup({
 	{ "https://github.com/github/copilot.vim" },
 
 	{
-		"ray-x/lsp_signature.nvim",
-		config = function()
-			require("lsp_signature").setup({})
-		end,
-	},
-
-	{
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",
 		config = true,
@@ -480,6 +473,7 @@ require("lazy").setup({
 				default = { "lsp", "path", "buffer" },
 			},
 			fuzzy = { implementation = "prefer_rust_with_warning" },
+			signature = { enabled = true, window = { show_documentation = true } },
 			completion = {
 				documentation = {
 					auto_show = true,
