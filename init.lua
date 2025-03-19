@@ -476,7 +476,6 @@ require("lazy").setup({
 		opts = {
 			keymap = { preset = "default" },
 			appearance = {
-				use_nvim_cmp_as_default = true,
 				nerd_font_variant = "mono",
 			},
 			sources = {
@@ -586,6 +585,7 @@ require("lazy").setup({
 			{ "<leader>,", function() Snacks.picker.buffers() end, desc = "Buffers" },
       { "<leader>/", function() Snacks.picker.grep({need_search = false, live = false}) end, desc = "Grep" },
 			{ "<leader>e", function() Snacks.explorer() end, desc = "File Explorer" },
+			{ "<leader>q", function() Snacks.picker.diagnostics() end, desc = "Diagnostics" },
 			-- find
 			{ "<leader>fb", function() Snacks.picker.buffers() end, desc = "Buffers" },
 			{ "<leader>ff", function() Snacks.picker.files() end, desc = "Find Files" },
