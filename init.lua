@@ -444,28 +444,8 @@ require("lazy").setup({
 	},
 
 	{
-		"olimorris/codecompanion.nvim",
-		config = function()
-			require("codecompanion").setup({})
-		end,
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-treesitter/nvim-treesitter",
-		},
-	},
-
-	{
 		"OXY2DEV/markview.nvim",
 		lazy = false,
-		opts = {
-			preview = {
-				filetypes = { "markdown", "codecompanion" },
-				ignore_buftypes = {},
-				preview = {
-					enabled = true,
-				},
-			},
-		},
 	},
 
 	{
