@@ -406,7 +406,12 @@ require("lazy").setup({
 
 	{ "windwp/nvim-ts-autotag", lazy = false, opts = {} },
 
-	{ "https://github.com/github/copilot.vim" },
+	{
+		"supermaven-inc/supermaven-nvim",
+		config = function()
+			require("supermaven-nvim").setup({})
+		end,
+	},
 
 	{
 		"windwp/nvim-autopairs",
