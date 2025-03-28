@@ -205,7 +205,6 @@ require("lazy").setup({
 		ft = "lua",
 		opts = {
 			library = {
-				-- Load luvit types when the `vim.uv` word is found
 				{ path = "${3rd}/luv/library", words = { "vim%.uv" } },
 			},
 		},
@@ -239,8 +238,6 @@ require("lazy").setup({
 						return client:supports_method(method, bufnr)
 					end
 
-					-- The following two autocommands are used to highlight references of the
-					-- word under your cursor when your cursor rests there for a little while.
 					local client = vim.lsp.get_client_by_id(event.data.client_id)
 					if
 						client
