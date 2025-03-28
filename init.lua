@@ -280,16 +280,6 @@ require("lazy").setup({
 				cmd = { "/home/juliet/.cargo/bin/rust-analyzer" },
 			})
 
-			nvim_lsp.sourcekit.setup({
-				capabilities = {
-					workspace = {
-						didChangeWatchedFiles = {
-							dynamicRegistration = true,
-						},
-					},
-				},
-			})
-
 			local servers = {
 				vtsls = {
 					root_dir = nvim_lsp.util.root_pattern("package.json"),
