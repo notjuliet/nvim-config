@@ -39,6 +39,7 @@ vim.diagnostic.config({
 			[vim.diagnostic.severity.HINT] = "󰌶 ",
 		},
 	} or {},
+	virtual_text = true,
 })
 
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
