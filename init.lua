@@ -26,6 +26,21 @@ vim.opt.inccommand = "split"
 vim.opt.cursorline = true
 vim.opt.scrolloff = 10
 
+vim.diagnostic.config({
+	virtual_lines = {
+		current_line = true,
+	},
+	severity_sort = true,
+	signs = vim.g.have_nerd_font and {
+		text = {
+			[vim.diagnostic.severity.ERROR] = "󰅚 ",
+			[vim.diagnostic.severity.WARN] = "󰀪 ",
+			[vim.diagnostic.severity.INFO] = "󰋽 ",
+			[vim.diagnostic.severity.HINT] = "󰌶 ",
+		},
+	} or {},
+})
+
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
@@ -214,8 +229,6 @@ require("lazy").setup({
 
 					map("<leader>r", vim.lsp.buf.rename, "[R]e[n]ame")
 					map("<leader>C", vim.lsp.buf.code_action, "[C]ode Action", { "n", "x" })
-
-					map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
 					---@param client vim.lsp.Client
 					---@param method vim.lsp.protocol.Method
@@ -445,35 +458,6 @@ require("lazy").setup({
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",
 		config = true,
-	},
-
-	{
-		"rachartier/tiny-inline-diagnostic.nvim",
-		event = "VeryLazy", -- Or `LspAttach`
-		priority = 1000, -- needs to be loaded in first
-		config = function()
-			require("tiny-inline-diagnostic").setup({
-				options = {
-					multilines = {
-						enabled = true,
-						always_show = true,
-					},
-				},
-			})
-			vim.diagnostic.config({
-				severity_sort = true,
-				underline = true,
-				signs = vim.g.have_nerd_font and {
-					text = {
-						[vim.diagnostic.severity.ERROR] = "󰅚 ",
-						[vim.diagnostic.severity.WARN] = "󰀪 ",
-						[vim.diagnostic.severity.INFO] = "󰋽 ",
-						[vim.diagnostic.severity.HINT] = "󰌶 ",
-					},
-				} or {},
-				virtual_text = false,
-			})
-		end,
 	},
 
 	{
