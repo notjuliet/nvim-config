@@ -272,6 +272,7 @@ require("lazy").setup({
 				end,
 			})
 
+			local capabilities = require("blink.cmp").get_lsp_capabilities()
 			local nvim_lsp = require("lspconfig")
 			nvim_lsp.denols.setup({
 				root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc"),
@@ -302,11 +303,6 @@ require("lazy").setup({
 				docker_compose_language_service = {},
 			}
 
-			for server, config in pairs(servers) do
-				config.capabilities = require("blink.cmp").get_lsp_capabilities(config.capabilities)
-				nvim_lsp[server].setup(config)
-			end
-
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"stylua",
@@ -321,7 +317,6 @@ require("lazy").setup({
 				handlers = {
 					function(server_name)
 						local server = servers[server_name] or {}
-						local capabilities = vim.lsp.protocol.make_client_capabilities()
 						server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
 						require("lspconfig")[server_name].setup(server)
 					end,
@@ -455,7 +450,10 @@ require("lazy").setup({
 				nerd_font_variant = "mono",
 			},
 			sources = {
-				default = { "lsp", "path" },
+				default = { "lsp", "path", "lazydev" },
+				providers = {
+					lazydev = { module = "lazydev.integrations.blink", score_offset = 100 },
+				},
 			},
 			fuzzy = { implementation = "prefer_rust_with_warning" },
 			signature = { enabled = true, window = { show_documentation = true } },
