@@ -216,7 +216,6 @@ require("lazy").setup({
 			{ "williamboman/mason.nvim", opts = {} },
 			"williamboman/mason-lspconfig.nvim",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
-			"saghen/blink.cmp",
 		},
 		config = function()
 			vim.api.nvim_create_autocmd("LspAttach", {
@@ -260,7 +259,6 @@ require("lazy").setup({
 				end,
 			})
 
-			local capabilities = require("blink.cmp").get_lsp_capabilities()
 			local nvim_lsp = require("lspconfig")
 			nvim_lsp.denols.setup({
 				root_dir = nvim_lsp.util.root_pattern("deno.json", "deno.jsonc"),
@@ -305,7 +303,6 @@ require("lazy").setup({
 				handlers = {
 					function(server_name)
 						local server = servers[server_name] or {}
-						server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
 						require("lspconfig")[server_name].setup(server)
 					end,
 				},
