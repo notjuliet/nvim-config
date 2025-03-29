@@ -230,22 +230,10 @@ require("lazy").setup({
 					map("<leader>r", vim.lsp.buf.rename, "[R]e[n]ame")
 					map("<leader>C", vim.lsp.buf.code_action, "[C]ode Action", { "n", "x" })
 
-					---@param client vim.lsp.Client
-					---@param method vim.lsp.protocol.Method
-					---@param bufnr? integer some lsp support methods only in specific files
-					---@return boolean
-					local function client_supports_method(client, method, bufnr)
-						return client:supports_method(method, bufnr)
-					end
-
 					local client = vim.lsp.get_client_by_id(event.data.client_id)
 					if
 						client
-						and client_supports_method(
-							client,
-							vim.lsp.protocol.Methods.textDocument_documentHighlight,
-							event.buf
-						)
+						and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight, event.buf)
 					then
 						local highlight_augroup =
 							vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
