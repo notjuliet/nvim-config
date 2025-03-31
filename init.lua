@@ -383,7 +383,6 @@ require("lazy").setup({
 					},
 				})
 				local fileinfo = statusline.section_fileinfo({ trunc_width = 120 })
-				local location = statusline.section_location({ trunc_width = 75 })
 
 				return statusline.combine_groups({
 					{ hl = mode_hl, strings = { mode } },
@@ -392,7 +391,6 @@ require("lazy").setup({
 					{ hl = "MiniStatuslineFilename", strings = { "%f %r %m" } },
 					"%=", -- End left alignment
 					{ hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
-					{ hl = mode_hl, strings = { location } },
 				})
 			end
 			statusline.setup({ use_icons = vim.g.have_nerd_font, content = { active = content } })
