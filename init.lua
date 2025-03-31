@@ -366,6 +366,7 @@ require("lazy").setup({
 		config = function()
 			require("mini.ai").setup({ n_lines = 500 })
 			require("mini.surround").setup()
+			require("mini.icons").setup()
 
 			local statusline = require("mini.statusline")
 			local content = function()
