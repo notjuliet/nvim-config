@@ -368,7 +368,33 @@ require("lazy").setup({
 			require("mini.surround").setup()
 
 			local statusline = require("mini.statusline")
-			statusline.setup({ use_icons = vim.g.have_nerd_font })
+			local content = function()
+				local mode, mode_hl = statusline.section_mode({ trunc_width = 120 })
+				local git = statusline.section_git({ trunc_width = 40 })
+				local diff = statusline.section_diff({ trunc_width = 75 })
+				local diagnostics = statusline.section_diagnostics({
+					trunc_width = 75,
+					signs = {
+						ERROR = "%#DiagnosticError#󰅚 %#MiniStatuslineDevinfo#",
+						WARN = "%#DiagnosticWarn#󰀪 %#MiniStatuslineDevinfo#",
+						INFO = "%#DiagnosticInfo#󰋽 %#MiniStatuslineDevinfo#",
+						HINT = "%#DiagnosticHint#󰌶 %#MiniStatuslineDevinfo#",
+					},
+				})
+				local fileinfo = statusline.section_fileinfo({ trunc_width = 120 })
+				local location = statusline.section_location({ trunc_width = 75 })
+
+				return statusline.combine_groups({
+					{ hl = mode_hl, strings = { mode } },
+					{ hl = "MiniStatuslineDevinfo", strings = { git, diff, diagnostics } },
+					"%<", -- Mark general truncate point
+					{ hl = "MiniStatuslineFilename", strings = { "%f %r %m" } },
+					"%=", -- End left alignment
+					{ hl = "MiniStatuslineFileinfo", strings = { fileinfo } },
+					{ hl = mode_hl, strings = { location } },
+				})
+			end
+			statusline.setup({ use_icons = vim.g.have_nerd_font, content = { active = content } })
 		end,
 	},
 
@@ -445,21 +471,6 @@ require("lazy").setup({
 			},
 		},
 		opts_extend = { "sources.default" },
-	},
-
-	{
-		"akinsho/bufferline.nvim",
-		version = "*",
-		dependencies = "nvim-tree/nvim-web-devicons",
-		opts = {
-			options = {
-				diagnostics = "nvim_lsp",
-				diagnostics_indicator = function(count, level)
-					local icon = level:match("error") and " " or " "
-					return " " .. icon .. count
-				end,
-			},
-		},
 	},
 
 	{
