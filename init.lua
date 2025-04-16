@@ -485,6 +485,13 @@ require("lazy").setup({
 	},
 
 	{
+		"mistweaverco/kulala.nvim",
+		opts = {
+			global_keymaps = true,
+		},
+	},
+
+	{
 		"saghen/blink.cmp",
 		version = "*",
 		---@module 'blink.cmp'
